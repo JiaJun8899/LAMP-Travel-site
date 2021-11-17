@@ -6,7 +6,7 @@
         ?>
         <title>About Us</title>
     </head>
-    <body class="registerpage">
+    <body class="aboutpage">
         <?php
         include "nav.inc.php";
         ?>
