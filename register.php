@@ -26,14 +26,14 @@
                             <div class="form-group row">
                                 <label for="pwd" class="col-sm-2 col-form-label">Password</label>
                                 <div class="col-sm">
-                                    <input type="password" class="form-control" id="pwd" placeholder="Password">
+                                    <input type="password" class="form-control" id="pwd" name="pwd" placeholder="Password">
                                     <h6 id="pwderror"></h6>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputPassword3" class="col-sm-2 col-form-label"> Confirm Password</label>
                                 <div class="col-sm" style="margin-top: 13px;">
-                                    <input type="password" class="form-control" id="conpwd" placeholder="Confirm Password">
+                                    <input type="password" class="form-control" name="pwd_confirm" id="conpwd" placeholder="Confirm Password">
                                     <h6 id="conpwderror"></h6>
                                 </div>
                             </div>

@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -75,34 +78,34 @@
                 </div>
             </section>
             <section class="standard">
-            <h1>Testimonial From our customers</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            <div class="row justify-content-between">
-                <div class="testimonial-col">
-                    <img src="static/user1.jpg">
-                    <div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit. Pellentesque aliquet turpis nulla, eleifend
-                            faucibus est sollicitudin ut. Maecenas ut venenatis ex,
-                            et dapibus purus.</p>
-                        <h3>Christine Berkley</h3>
+                <h1>Testimonial From our customers</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <div class="row justify-content-between">
+                    <div class="testimonial-col">
+                        <img src="static/user1.jpg">
+                        <div>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing
+                                elit. Pellentesque aliquet turpis nulla, eleifend
+                                faucibus est sollicitudin ut. Maecenas ut venenatis ex,
+                                et dapibus purus.</p>
+                            <h3>Christine Berkley</h3>
+                        </div>
+                    </div>
+                    <div class="testimonial-col">
+                        <img src="static/user2.jpg">
+                        <div>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing
+                                elit. Pellentesque aliquet turpis nulla, eleifend
+                                faucibus est sollicitudin ut. Maecenas ut venenatis ex,
+                                et dapibus purus.</p>
+                            <h3>David</h3>
+                        </div>
                     </div>
                 </div>
-                <div class="testimonial-col">
-                    <img src="static/user2.jpg">
-                    <div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit. Pellentesque aliquet turpis nulla, eleifend
-                            faucibus est sollicitudin ut. Maecenas ut venenatis ex,
-                            et dapibus purus.</p>
-                        <h3>David</h3>
-                    </div>
-                </div>
-            </div>
-        </section>
+            </section>
         </main>
     </body>
-    <?php
-    include 'footer.inc.php';
-    ?>
+<?php
+include 'footer.inc.php';
+?>
 </html>

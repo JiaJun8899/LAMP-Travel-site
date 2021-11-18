@@ -4,7 +4,7 @@
     </button>
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
         <a class="navbar-brand" href="index.php">
-            <img src="/static/logo.jpg" width="50" height="50" alt="">
+            <img src="static/logo.jpg" width="50" height="50" alt="">
         </a>
         <ul class="navbar-nav">
             <li class="nav-item">

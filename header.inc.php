@@ -18,7 +18,7 @@
     crossorigin="anonymous">
 </script>
 <script defer src="js/main.js"></script>
-<link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+<link rel="icon" type="image/x-icon" href="static/favicon.ico">
 <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/blog/">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
