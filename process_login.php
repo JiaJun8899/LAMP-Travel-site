@@ -19,17 +19,6 @@ if (empty($_POST["log_pwd"])) {
 if ($success) {
     authenticateUser();
 }
-if ($success) {
-    $_SESSION["user"] = $email;
-    echo "<h4>Your Login is successful!</h4>";
-    echo "<p>Welcome back <p>";
-    echo"<div><a href ='index.php' class='btn btn-success'>Return home</a></div>";
-} else {
-    echo '<h3>OOPS!</h3>';
-    echo "<h4>The following input errors were detected:</h4>";
-    echo "<p>" . $errorMsg . "</p>";
-    echo"<a href ='login.php' class= 'btn btn-danger'>Return to Login</a>";
-}
 
 //Helper function that checks input for malicious or unwanted content.
 function sanitize_input($data) {
@@ -89,7 +78,27 @@ function authenticateUser() {
         include 'nav.inc.php';
         ?>
         <main class="container">
-
+            <section class="login">
+                <div class="row justify-content-center">
+                    <?php
+                    if ($success) {
+                        $_SESSION["user"] = $email;
+                        echo
+                        '<div class="col-6 success">'
+                        . "<h1>Welcome Back!</h1>"
+                        . "<a href ='index.php' class='btn btn-success'>Return home</a>"
+                        . "</div>";
+                    } else {
+                        echo
+                        '<div class="col-6 error">'
+                        . '<h1>OOPS</h1>'
+                        . '<h3>Something went wrong</h3>'
+                        . '<a href ="login.php" class= "btn btn-danger">Return to Login</a>'
+                        . '</div>';
+                    }
+                    ?>
+                </div>
+            </section>
         </main>
         <?php
         include "footer.inc.php";

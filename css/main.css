@@ -48,7 +48,7 @@ p{
 .header{
     min-height: 125vh;
     width: 100%;
-    background-image: url(/static/banner.jpg);
+    background-image: url(../static/banner.jpg);
     background-position:center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -184,7 +184,7 @@ p{
 }
 /*Register page*/
 .registerpage{
-    background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(/static/registerbg.jpg);
+    background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(../static/registerbg.jpg);
     background-size: cover;
 }
 .signup{
@@ -195,11 +195,13 @@ p{
 .signup h1{
     text-align: center;
 }
-.center {
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+/*Process Login Page*/
+.login{
+    text-align: center;
+}
+.error h1{
+    color: red;
+}
+.success h1{
+    color: green;
 }

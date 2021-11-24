@@ -12,7 +12,7 @@
         ?>
         <main class="container">
             <section>
-                <div class="row justify-content-center">
+                <div class="row justify-content-center rounded">
                     <div class="col-6 signup">
                         <h1>Sign Up</h1>
                         <form action="process_register.php" method="post">
@@ -31,7 +31,7 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="inputPassword3" class="col-sm-2 col-form-label"> Confirm Password</label>
+                                <label for="conpwd" class="col-sm-2 col-form-label"> Confirm Password</label>
                                 <div class="col-sm" style="margin-top: 13px;">
                                     <input type="password" class="form-control" name="pwd_confirm" id="conpwd" placeholder="Confirm Password">
                                     <h6 id="conpwderror"></h6>
