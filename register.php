@@ -38,7 +38,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label><input type="checkbox" name="agree" required> Agree to <a href="index.php">terms and conditions</a>.</label>
+                                <label><input type="checkbox" name="agree" required> Agree to <a href="index.php" target="_blank">terms and conditions</a>.</label>
                             </div>
                             <button class="btn btn-primary" type="submit">Submit</button>
                     </div>

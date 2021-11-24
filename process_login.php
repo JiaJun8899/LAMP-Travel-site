@@ -2,22 +2,28 @@
 session_start();
 $email = $pwd = $errorMsg = "";
 $success = true;
-if (empty($_POST["log_email"])) {
-    $errorMsg .= "Email is required.<br>";
-    $success = false;
-} else {
-    $email = sanitize_input($_POST["log_email"]);
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errorMsg .= "Invalid email format.<br>";
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    if (empty($_POST["log_email"])) {
+        $errorMsg .= "Email is required.<br>";
+        $success = false;
+    } else {
+        $email = sanitize_input($_POST["log_email"]);
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errorMsg .= "Invalid email format.<br>";
+            $success = false;
+        }
+    }
+    if (empty($_POST["log_pwd"])) {
+        $errorMsg .= "Password is required.<br>";
         $success = false;
     }
-}
-if (empty($_POST["log_pwd"])) {
-    $errorMsg .= "Password is required.<br>";
-    $success = false;
-}
-if ($success) {
-    authenticateUser();
+    if ($success) {
+        authenticateUser();
+    }
+}else{
+    $_SESSION["errormsg"] = "Unauthorised Access!";
+    header("Location: http://35.187.229.58/project/index.php");
+    exit();
 }
 
 //Helper function that checks input for malicious or unwanted content.

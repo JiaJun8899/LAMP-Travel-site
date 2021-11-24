@@ -1,41 +1,38 @@
 <?php
+session_start();
 $email = $pwd = $errorMsg = "";
 $success = true;
-if (empty($_POST["email"])) {
-    $errorMsg .= "Email is required.<br>";
-    $success = false;
-} else {
-    $email = sanitize_input($_POST["email"]);
-    // Additional check to make sure e-mail address is well-formed.
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errorMsg .= "Invalid email format.<br>";
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    if (empty($_POST["email"])) {
+        $errorMsg .= "Email is required.<br>";
         $success = false;
-    }
-}
-if (empty($_POST["pwd"])) {
-    $errorMsg .= "Password is required.<br>";
-    $success = false;
-} else if (empty($_POST["pwd_confirm"])) {
-    $errorMsg .= "Password confirm is required.<br>";
-    $success = false;
-} else {
-    if ($success === password_chk($_POST["pwd"], $_POST["pwd_confirm"])) {
-        $pwd = password_hash($_POST["pwd"], PASSWORD_DEFAULT);
     } else {
-        $errorMsg .= "Password do not match.<br>";
-        $success = false;
+        $email = sanitize_input($_POST["email"]);
+        // Additional check to make sure e-mail address is well-formed.
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errorMsg .= "Invalid email format.<br>";
+            $success = false;
+        }
     }
-}
-saveMemberToDB();
-if ($success) {
-    echo "<h4>Your registration successful!</h4>";
-    echo "<p>Thank you for signing up </p>";
-    echo"<div><a href ='index.php' class='btn btn-success'>Return home</a></div>";
+    if (empty($_POST["pwd"])) {
+        $errorMsg .= "Password is required.<br>";
+        $success = false;
+    } else if (empty($_POST["pwd_confirm"])) {
+        $errorMsg .= "Password confirm is required.<br>";
+        $success = false;
+    } else {
+        if ($success === password_chk($_POST["pwd"], $_POST["pwd_confirm"])) {
+            $pwd = password_hash($_POST["pwd"], PASSWORD_DEFAULT);
+        } else {
+            $errorMsg .= "Password do not match.<br>";
+            $success = false;
+        }
+    }
+    saveMemberToDB();
 } else {
-    echo '<h3>OOPS!</h3>';
-    echo "<h4>The following input errors were detected:</h4>";
-    echo "<p>" . $errorMsg . "</p>";
-    echo"<a href ='register.php' class= 'btn btn-danger'>Return to Sign-up</a>";
+    $_SESSION["errormsg"] = "Unauthorised Access!";
+    header("Location: http://35.187.229.58/project/index.php");
+    exit();
 }
 
 //Helper function that checks input for malicious or unwanted content.
@@ -87,7 +84,18 @@ function saveMemberToDB() {
         <title>Registration</title>
     </head>
     <body>
-        <p>#TODO</p>
+        <?php
+        if ($success) {
+            echo "<h4>Your registration successful!</h4>";
+            echo "<p>Thank you for signing up </p>";
+            echo"<div><a href ='index.php' class='btn btn-success'>Return home</a></div>";
+        } else {
+            echo '<h3>OOPS!</h3>';
+            echo "<h4>The following input errors were detected:</h4>";
+            echo "<p>" . $errorMsg . "</p>";
+            echo"<a href ='register.php' class= 'btn btn-danger'>Return to Sign-up</a>";
+        }
+        ?>
     </body>
     <?php
     include 'footer.inc.php';

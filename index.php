@@ -1,5 +1,10 @@
 <?php
 session_start();
+if($_SESSION["errormsg"]!=NULL){
+    $error = $_SESSION["errormsg"];
+    echo "<script>alert('$error');</script>";
+    unset($_SESSION["errormsg"]);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
