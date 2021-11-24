@@ -14,17 +14,34 @@
                 <a class="nav-link" href="tour_packages.php">Tour Package</a>
             </li>
         </ul>
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="register.php">
-                    <span class="material-icons">account_circle</span>Register
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" title="Log In" href="login.php">
-                    <span class="material-icons">login</span>Login
-                </a>
-            </li>
-        </ul>
+        <?php
+        if ($_SESSION["user"] == NULL) {
+            echo 
+            '<ul class="navbar-nav ml-auto">'
+                .'<li class="nav-item">'
+                    .'<a class="nav-link" href="register.php">'
+                        .'<span class="material-icons">account_circle</span>Register'
+                    .'</a>'
+                .'</li>'
+                .'<li class="nav-item">'
+                    .'<a class="nav-link" title="Log In" href="login.php">'
+                        .'<span class="material-icons">login</span>Login'
+                    .'</a>'
+                .'</li>'
+            .'</ul>';
+        } else {
+            echo 
+            '<ul class = "navbar-nav ml-auto">'
+                .'<li class = "nav-item">'
+                    . '<a class= "nav-link" href="profile.php">'
+                    . '<span class="material-icons">account_circle</span>Profile'
+                    . '</a>'
+                .'<li class ="nav-item">'
+                    . '<a class="nav-link" href="logout.php">Logout'
+                    . '</a>'
+                . '</li>'
+            . '</ul>';
+        }
+        ?>
     </div>
 </nav>

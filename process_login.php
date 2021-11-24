@@ -2,33 +2,28 @@
 session_start();
 $email = $pwd = $errorMsg = "";
 $success = true;
-if (empty($_POST["log_email"])) {
-    $errorMsg .= "Email is required.<br>";
-    $success = false;
-} else {
-    $email = sanitize_input($_POST["log_email"]);
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errorMsg .= "Invalid email format.<br>";
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    if (empty($_POST["log_email"])) {
+        $errorMsg .= "Email is required.<br>";
+        $success = false;
+    } else {
+        $email = sanitize_input($_POST["log_email"]);
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errorMsg .= "Invalid email format.<br>";
+            $success = false;
+        }
+    }
+    if (empty($_POST["log_pwd"])) {
+        $errorMsg .= "Password is required.<br>";
         $success = false;
     }
-}
-if (empty($_POST["log_pwd"])) {
-    $errorMsg .= "Password is required.<br>";
-    $success = false;
-}
-if ($success) {
-    authenticateUser();
-}
-if ($success) {
-    $_SESSION["user"] = $email;
-    echo "<h4>Your Login is successful!</h4>";
-    echo "<p>Welcome back <p>";
-    echo"<div><a href ='index.php' class='btn btn-success'>Return home</a></div>";
-} else {
-    echo '<h3>OOPS!</h3>';
-    echo "<h4>The following input errors were detected:</h4>";
-    echo "<p>" . $errorMsg . "</p>";
-    echo"<a href ='login.php' class= 'btn btn-danger'>Return to Login</a>";
+    if ($success) {
+        authenticateUser();
+    }
+}else{
+    $_SESSION["errormsg"] = "Unauthorised Access!";
+    header("Location: http://35.187.229.58/project/index.php");
+    exit();
 }
 
 //Helper function that checks input for malicious or unwanted content.
@@ -89,7 +84,27 @@ function authenticateUser() {
         include 'nav.inc.php';
         ?>
         <main class="container">
-
+            <section class="login">
+                <div class="row justify-content-center">
+                    <?php
+                    if ($success) {
+                        $_SESSION["user"] = $email;
+                        echo
+                        '<div class="col-6 success">'
+                        . "<h1>Welcome Back!</h1>"
+                        . "<a href ='index.php' class='btn btn-success'>Return home</a>"
+                        . "</div>";
+                    } else {
+                        echo
+                        '<div class="col-6 error">'
+                        . '<h1>OOPS</h1>'
+                        . '<h3>Something went wrong</h3>'
+                        . '<a href ="login.php" class= "btn btn-danger">Return to Login</a>'
+                        . '</div>';
+                    }
+                    ?>
+                </div>
+            </section>
         </main>
         <?php
         include "footer.inc.php";
