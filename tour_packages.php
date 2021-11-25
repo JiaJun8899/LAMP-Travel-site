@@ -188,7 +188,7 @@
                             </div>
                             <div class="modal-footer form-group">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary cartButton">Add to Cart</button>
+                                <input type="submit" name="submit" value="Add to Cart" class="btn btn-primary cartButton">
                             </div>
                         </form>
                     </div>
