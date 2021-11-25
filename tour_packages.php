@@ -46,13 +46,13 @@
     </head>
     
     <body>
-        <?php
-            include "nav.inc.php";
-        
-            // create dynamic tour packages from database
-            
-            // read from database
-            // Create database connection.
+        //<?php
+//            include "nav.inc.php";
+//        
+//            // create dynamic tour packages from database
+//            
+//            // read from database
+//            // Create database connection.
 //            $config = parse_ini_file('../../private/db-config.ini');
 //            $conn = new mysqli($config['servername'], $config['username'],
 //            $config['password'], $config['dbname']);
@@ -65,18 +65,51 @@
 //            }
 //            else
 //            {
+//                // testing with just id 1
+//                $pid = 1;
+//                
 //                // Prepare the statement:
-//                $stmt = $conn->prepare("SELECT * FROM tour_packages");
+//                $stmt = $conn->prepare("SELECT * FROM tour_packages WHERE pid=?");
 //                // Bind & execute the query statement:
-//                $stmt->bind_param("s", $email);
+//                $stmt->bind_param("i", $pid);
 //                $stmt->execute();
 //                $result = $stmt->get_result();
+//                
+//                while ($row = $result->fetch_assoc())
+//                {
+//                    $pid = $row["pid"];
+//                    $country = $row["country"];
+//                    $city = $row["city"];
+//                    $price = $row["price"];
+//                    $short_description = $row["short_description"];
+//                    $long_description = $row["long_description"];
+//                    $image_link = $row["image_link"];
+//                    
+//                    // create html card
+//                    echo "<div class=\"col-md-6\">";
+//                        echo "<div class=\"row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative\">";
+//                            echo "<div class=\"col p-4 d-flex flex-column position-static\">";
+//                                echo "<strong class=\"d-inline-block mb-2 text-success country\">" . $country . "</strong>";
+//                                echo "<h3 class=\"mb-0 city\">" . $city . "</h3>";
+//                                echo "<div class=\"mb-1 text-muted price\">" . $price . "</div>";
+//                                echo "<p class=\"card-text mb-auto short-description\">" . $short_description . "</p>";
+//                                echo "<p class=\"long-description\">" . $long_description . "</p>";
+//                                echo "<p class=\"image-link\">" . $image_link . "</p>";
+//                                echo "<button id=\"" . $pid . "\" onclick=\"popUp(this)\" type=\"button\" class=\"stretched-link button-link\" data-toggle=\"modal\" data-target=\"#exampleModalCenter\">View Details</button>";
+//                            echo "</div>";
+//                            echo "<div class=\"col-auto d-none d-lg-block\">";
+//                              echo "<svg class=\"bd-placeholder-img\" width=\"200\" height=\"250\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"". $country ."\" preserveAspectRatio=\"xMidYMid slice\" focusable=\"false\">";
+//                                  echo "<image class=\"thumbnail\" href=\"" . $image_link . "\"/>";
+//                              echo "</svg>";
+//                            echo "</div>";
+//                        echo "</div>";
+//                    echo "</div>";
+//                }
 //            }
-//            
 //            
 //            $stmt->close();
 //            $conn->close();
-        ?>
+//        ?>
         
         <main class="container">
             <div class="p-4 p-md-5 mb-4 text-white rounded bg-secondary">
@@ -248,7 +281,7 @@
                                 <div class="col col-xl-3 form-group">
                                     <h5 id="popup-price">$</h5>
                                     <br>
-                                    <label for="birthday">Start Date: </label>
+                                    <label for="date">Start Date: </label>
                                     <input type="date" id="date" name="birthday" required> <!--might not work for safari-->
                                 </div>
                             </div>
