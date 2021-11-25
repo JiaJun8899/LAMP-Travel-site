@@ -46,9 +46,9 @@
     </head>
     
     <body>
-        //<?php
-//            include "nav.inc.php";
-//        
+        <?php
+            include "nav.inc.php";
+        
 //            // create dynamic tour packages from database
 //            
 //            // read from database
