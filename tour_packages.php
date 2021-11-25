@@ -46,218 +46,119 @@
     </head>
     
     <body>
+        <main class="container">
+            
         <?php
             include "nav.inc.php";
-        
-//            // create dynamic tour packages from database
-//            
-//            // read from database
-//            // Create database connection.
-//            $config = parse_ini_file('../../private/db-config.ini');
-//            $conn = new mysqli($config['servername'], $config['username'],
-//            $config['password'], $config['dbname']);
-//
-//            // Check connection
-//            if ($conn->connect_error)
-//            {
-//                $errorMsg = "Connection failed: " . $conn->connect_error;
-//                $success = false;
-//            }
-//            else
-//            {
-//                // testing with just id 1
-//                $pid = 1;
-//                
-//                // Prepare the statement:
-//                $stmt = $conn->prepare("SELECT * FROM tour_packages WHERE pid=?");
-//                // Bind & execute the query statement:
+
+            // create dynamic tour packages from database
+            
+            // read from database
+            // Create database connection.
+            $config = parse_ini_file('../../private/db-config.ini');
+            $conn = new mysqli($config['servername'], $config['username'],
+            $config['password'], $config['dbname']);
+
+            $errorMsg = "";
+            
+            // Check connection
+            if ($conn->connect_error)
+            {
+                $errorMsg = "Connection failed: " . $conn->connect_error;
+                $success = false;
+            }
+            else
+            {
+                // testing with just id 1
+                $pid = 2;
+                
+                // Prepare the statement:
+                $stmt = "SELECT * FROM travel.tour_packages";
+                //$stmt = $conn->prepare("SELECT * FROM travel.tour_packages WHERE pid=?");
+                // Bind & execute the query statement:
 //                $stmt->bind_param("i", $pid);
 //                $stmt->execute();
 //                $result = $stmt->get_result();
-//                
-//                while ($row = $result->fetch_assoc())
-//                {
-//                    $pid = $row["pid"];
-//                    $country = $row["country"];
-//                    $city = $row["city"];
-//                    $price = $row["price"];
-//                    $short_description = $row["short_description"];
-//                    $long_description = $row["long_description"];
-//                    $image_link = $row["image_link"];
-//                    
-//                    // create html card
-//                    echo "<div class=\"col-md-6\">";
-//                        echo "<div class=\"row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative\">";
-//                            echo "<div class=\"col p-4 d-flex flex-column position-static\">";
-//                                echo "<strong class=\"d-inline-block mb-2 text-success country\">" . $country . "</strong>";
-//                                echo "<h3 class=\"mb-0 city\">" . $city . "</h3>";
-//                                echo "<div class=\"mb-1 text-muted price\">" . $price . "</div>";
-//                                echo "<p class=\"card-text mb-auto short-description\">" . $short_description . "</p>";
-//                                echo "<p class=\"long-description\">" . $long_description . "</p>";
-//                                echo "<p class=\"image-link\">" . $image_link . "</p>";
-//                                echo "<button id=\"" . $pid . "\" onclick=\"popUp(this)\" type=\"button\" class=\"stretched-link button-link\" data-toggle=\"modal\" data-target=\"#exampleModalCenter\">View Details</button>";
-//                            echo "</div>";
-//                            echo "<div class=\"col-auto d-none d-lg-block\">";
-//                              echo "<svg class=\"bd-placeholder-img\" width=\"200\" height=\"250\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"". $country ."\" preserveAspectRatio=\"xMidYMid slice\" focusable=\"false\">";
-//                                  echo "<image class=\"thumbnail\" href=\"" . $image_link . "\"/>";
-//                              echo "</svg>";
-//                            echo "</div>";
-//                        echo "</div>";
-//                    echo "</div>";
-//                }
-//            }
-//            
-//            $stmt->close();
-//            $conn->close();
-//        ?>
-        
-        <main class="container">
-            <div class="p-4 p-md-5 mb-4 text-white rounded bg-secondary">
-                <div class="col-md-6 px-0">
-                    <h1 class="display-4 fst-italic">Europe;</h1>
-                    <p class="lead my-3">second smallest of the world's continents, composed of the westward-projecting peninsulas of Eurasia (the great landmass that it shares with Asia) and occupying nearly one-fifteenth of the world's total land area.</p>
-                    <p class="lead mb-0"><a href="#" class="text-white fw-bold">View our tour packages below!</a></p>
-                </div>
-            </div>
-
-            <div class="row mb-2">
-                <div class="col-md-6">
-                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                        <div class="col p-4 d-flex flex-column position-static">
-                            <strong class="d-inline-block mb-2 text-success country">France</strong>
-                            <h3 class="mb-0 city">Paris</h3>
-                            <div class="mb-1 text-muted price">$170</div>
-                            <p class="card-text mb-auto short-description">Explore Paris with a captivating sightseeing tour that takes you around the city to enjoy the Eiffel Tower, Seine River Cruise, and more!</p>
-                            <p class="long-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In molestie eros tellus, non finibus elit commodo quis. Praesent eu odio ac nibh lobortis placerat id ut urna. Phasellus ac ipsum placerat lectus gravida consectetur. Cras ullamcorper ac nisl in aliquam. Quisque tincidunt urna nec elit maximus, in rutrum massa sodales. Proin sit amet lorem dolor. Fusce nec lacus vitae lorem faucibus feugiat id ut metus. Maecenas nulla leo, lacinia a ex a, imperdiet porttitor velit. Aliquam sit amet erat fringilla, tincidunt justo dictum, eleifend augue.</p> <!--To put long description here when reading from database-->
-                            <p class="image-link">static/paris.jpg</p>
-                            <!--<a href="#" class="stretched-link" data-toggle="modal" data-target="#exampleModalCenter">View Details</a>-->
-                            <button id="1" onclick="popUp(this)" type="button" class="stretched-link button-link" data-toggle="modal" data-target="#exampleModalCenter">View Details</button>
-                        </div>
-                        <div class="col-auto d-none d-lg-block">
-                          <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Paris" preserveAspectRatio="xMidYMid slice" focusable="false">
-                              <image class="thumbnail" href="static/paris.jpg"/>
-                          </svg>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                        <div class="col p-4 d-flex flex-column position-static">
-                            <strong class="d-inline-block mb-2 text-success country">Greece</strong>
-                            <h3 class="mb-0 city">Santorini</h3>
-                            <div class="mb-1 text-muted price">$150</div>
-                            <p class="card-text mb-auto short-description">Visit the supermodel of the Greek islands, with multicolored cliffs soar out of a sea-drowned volcanic crater, topped by whitewashed buildings.</p>
-                            <p class="long-description">Hidden text for storing long description!</p>
-                            <p class="image-link">static/santorini.jpg</p>
-                            <button id="2" onclick="popUp(this)" type="button" class="stretched-link button-link" data-toggle="modal" data-target="#exampleModalCenter">View Details</button>
-                        </div>
-                        <div class="col-auto d-none d-lg-block">
-                            <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Santorini" preserveAspectRatio="xMidYMid slice" focusable="false">
-                                <image class="thumbnail" href="static/santorini.jpg"/>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="row mb-2">
-                <div class="col-md-6">
-                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                        <div class="col p-4 d-flex flex-column position-static">
-                            <strong class="d-inline-block mb-2 text-success country">Netherlands</strong>
-                            <h3 class="mb-0 city">Amsterdam</h3>
-                            <div class="mb-1 text-muted price">$170</div>
-                            <p class="card-text mb-auto short-description">Cruise down the unique Unesco Heritage listed Golden Age canals of Amsterdam in the classic wooden saloon boat.</p>
-                            <p class="long-description">Hidden text for storing long description!</p>
-                            <p class="image-link">static/amsterdam.jpg</p>
-                            <button id="3" onclick="popUp(this)" type="button" class="stretched-link button-link" data-toggle="modal" data-target="#exampleModalCenter">View Details</button>
-                        </div>
-                        <div class="col-auto d-none d-lg-block">
-                          <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Amsterdam" preserveAspectRatio="xMidYMid slice" focusable="false">
-                              <image class="thumbnail" href="static/amsterdam.jpg"/>                        
-                          </svg>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                        <div class="col p-4 d-flex flex-column position-static">
-                            <strong class="d-inline-block mb-2 text-success country">Italy</strong>
-                            <h3 class="mb-0 city">Rome</h3>
-                            <div class="mb-1 text-muted price">$120</div>
-                            <p class="card-text mb-auto short-description">Rome, the Eternal City, is one of the world greatest cities to visit and packed with tourist sites steeped in history.</p>
-                            <p class="long-description">Hidden text for storing long description!</p>
-                            <p class="image-link">static/rome.jpg</p>
-                            <button id="4" onclick="popUp(this)" type="button" class="stretched-link button-link" data-toggle="modal" data-target="#exampleModalCenter">View Details</button>
-                        </div>
-                        <div class="col-auto d-none d-lg-block">
-                          <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Rome" preserveAspectRatio="xMidYMid slice" focusable="false">
-                              <image class="thumbnail" href="static/rome.jpg"/>                        
-                          </svg>                      
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="row mb-2">
-                <div class="col-md-6">
-                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                        <div class="col p-4 d-flex flex-column position-static">
-                            <strong class="d-inline-block mb-2 text-success country">England</strong>
-                            <h3 class="mb-0 city">London</h3>
-                            <div class="mb-1 text-muted price">$100</div>
-                            <p class="card-text mb-auto short-description">Explore the River Thames as it weaves through the heart of London and discover fascinating history around every bend.</p>
-                            <p class="long-description">Hidden text for storing long description!</p>
-                            <p class="image-link">static/london.jpg</p>
-                            <button id="5" onclick="popUp(this)" type="button" class="stretched-link button-link" data-toggle="modal" data-target="#exampleModalCenter">View Details</button>
-                        </div>
-                        <div class="col-auto d-none d-lg-block">
-                          <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="London" preserveAspectRatio="xMidYMid slice" focusable="false">
-                              <image class="thumbnail" href="static/london.jpg"/>                        
-                          </svg>                      
-                        </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                        <div class="col p-4 d-flex flex-column position-static">
-                            <strong class="d-inline-block mb-2 text-success country">Scotland</strong>
-                            <h3 class="mb-0 city">Edinburgh</h3>
-                            <div class="mb-1 text-muted price">$110</div>
-                            <p class="card-text mb-auto short-description">A town intimately entwined with its landscape, buildings and monuments perched atop crags and overshadowed by cliffs.</p>
-                            <p class="long-description">Hidden text for storing long description!</p>
-                            <p class="image-link">static/edinburgh.jpg</p>
-                            <button id="6" onclick="popUp(this)" type="button" class="stretched-link button-link" data-toggle="modal" data-target="#exampleModalCenter">View Details</button>
-                        </div>
-                        <div class="col-auto d-none d-lg-block">
-                            <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Edinburgh" preserveAspectRatio="xMidYMid slice" focusable="false">
-                                <image class="thumbnail" href="static/edinburgh.jpg"/>                        
-                            </svg>                        
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="row mb-2">
-                <div class="col-md-6">
-                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                        <div class="col p-4 d-flex flex-column position-static">
-                            <strong class="d-inline-block mb-2 text-success country">Spain</strong>
-                            <h3 class="mb-0 city">Barcelona</h3>
-                            <div class="mb-1 text-muted price">$105</div>
-                            <p class="card-text mb-auto short-description">Overlooking the Mediterranean Sea, and famous for Gaudí and other Art Nouveau architecture, Barcelona is one of Europe’s trendiest cities.</p>
-                            <p class="long-description">Hidden text for storing long description!</p>
-                            <p class="image-link">static/barcelona.jpg</p>
-                            <button id="7" onclick="popUp(this)" type="button" class="stretched-link button-link" data-toggle="modal" data-target="#exampleModalCenter" aria-expanded="false">View Details</button>
-                        </div>
-                        <div class="col-auto d-none d-lg-block">
-                            <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Barcelona" preserveAspectRatio="xMidYMid slice" focusable="false">
-                                <image class="thumbnail" href="static/barcelona.jpg"/>                        
-                            </svg>                        
-                        </div>
-                  </div>
-                </div>
-            </div>
+                $result = $conn->query($stmt);
+                //$all_rows = $conn->fetch_all($result, MYSQL_ASSOC);
+                
+                // fetch all rows into array
+                $array = array();
+                $array_count = 0;
+                while ($row = $result->fetch_assoc())
+                {
+                    // add rows as array into array
+                    $array[$array_count] = array();
+                    $array[$array_count]["pid"] = $row["pid"];
+                    $array[$array_count]["country"] = $row["country"];
+                    $array[$array_count]["city"] = $row["city"];
+                    $array[$array_count]["price"] = $row["price"];
+                    $array[$array_count]["short_description"] = $row["short_description"];
+                    $array[$array_count]["long_description"] = $row["long_description"];
+                    $array[$array_count]["image_link"] = $row["image_link"];
+                    $array[$array_count]["img"] = $row["img"];
+                    $array_count += 1;
+                }
+                
+                // display tour package header
+                echo "<div class=\"p-4 p-md-5 mb-4 text-white rounded bg-secondary\">";
+                    echo "<div class=\"col-md-6 px-0\">";
+                        echo "<h1 class=\"display-4 fst-italic\">Europe;</h1>";
+                        echo "<p class=\"lead my-3\">second smallest of the world's continents, composed of the westward-projecting peninsulas of Eurasia (the great landmass that it shares with Asia) and occupying nearly one-fifteenth of the world's total land area.</p>";
+                        echo "<p class=\"lead mb-0\"><a href=\"#\" class=\"text-white fw-bold\">View our tour packages below!</a></p>";
+                    echo "</div>";
+                echo "</div>";
+                
+                // display rows
+                $row_count = 0;
+                for ($i = 0; $i < count($array); $i++)
+                {
+                    $col_count += 1; // new col count
+                    $pid = $array[$i]["pid"];
+                    $country = $array[$i]["country"];
+                    $city = $array[$i]["city"];
+                    $price = $array[$i]["price"];
+                    $short_description = $array[$i]["short_description"];
+                    $long_description = $array[$i]["long_description"];
+                    $img = $array[$i]["img"];
+                    
+                    // create html card
+                    
+                    if ($col_count == 1) // if first column, open row
+                    {
+                        echo "<div class=\"row mb-2\">";
+                    }
+                    
+                    echo "<div class=\"col-md-6\">";
+                        echo "<div class=\"row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative\">";
+                            echo "<div class=\"col p-4 d-flex flex-column position-static\">";
+                                echo "<strong class=\"d-inline-block mb-2 text-success country\">" . $country . "</strong>";
+                                echo "<h3 class=\"mb-0 city\">" . $city . "</h3>";
+                                echo "<div class=\"mb-1 text-muted price\">" . $price . "</div>";
+                                echo "<p class=\"card-text mb-auto short-description\">" . $short_description . "</p>";
+                                echo "<p class=\"long-description\">" . $long_description . "</p>";
+                                echo "<p class=\"image-link\">data:image/jpeg;base64," . base64_encode($img) . "</p>";
+                                echo "<button id=\"" . $pid . "\" onclick=\"popUp(this)\" type=\"button\" class=\"stretched-link button-link\" data-toggle=\"modal\" data-target=\"#exampleModalCenter\">View Details</button>";
+                            echo "</div>";
+                            echo "<div class=\"col-auto d-none d-lg-block\">";
+                                echo "<svg class=\"bd-placeholder-img\" width=\"200\" height=\"250\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"". $country ."\" preserveAspectRatio=\"xMidYMid slice\" focusable=\"false\">";
+                                    echo "<image class=\"thumbnail\" href=\"data:image/jpeg;base64," . base64_encode($img) . "\"/>";
+                                echo "</svg>";
+                            echo "</div>";
+                        echo "</div>";
+                    echo "</div>";
+                    
+                    // if second column, close row
+                    if ($col_count == 2 || $i == (count($array) - 1))
+                    {
+                        echo "</div>";
+                        $col_count = 0;
+                    }
+                }
+                //$stmt->close();
+            }
+            $conn->close();
+        ?>
             
             <!--dynamic pop up, content changes based on what was clicked-->
             <div class="modal fade bd-example-modal-xl" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="Pop Up" aria-hidden="true">
@@ -269,7 +170,7 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <form action="">
+                        <form action="process_add_to_cart.php" method="POST">
                             <div class="modal-body row">
                                 <div class="col col-xl-9">
                                     <h5 id="popup-city">City<br></h5>
@@ -282,7 +183,7 @@
                                     <h5 id="popup-price">$</h5>
                                     <br>
                                     <label for="date">Start Date: </label>
-                                    <input type="date" id="date" name="birthday" required> <!--might not work for safari-->
+                                    <input type="date" id="date" name="date" required> <!--might not work for safari-->
                                 </div>
                             </div>
                             <div class="modal-footer form-group">
