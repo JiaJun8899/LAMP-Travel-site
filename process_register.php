@@ -1,6 +1,7 @@
 <?php
 session_start();
-$email = $pwd = $errorMsg = "";
+$email = $fname = $lname = $errorMsg = $success = $pwd = "";
+$phone = 0;
 $success = true;
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if (empty($_POST["email"])) {
@@ -13,6 +14,15 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $errorMsg .= "Invalid email format.<br>";
             $success = false;
         }
+    }
+    if (empty($_POST["fname"])) {
+        $errorMsg .= "First Name is required.<br>";
+        $success = false;
+    } else {
+        $fname = sanitize_input($_POST["fname"]);
+    }
+    if (!empty($_POST["lname"])) {
+        $lname = sanitize_input($_POST["lname"]);
     }
     if (empty($_POST["pwd"])) {
         $errorMsg .= "Password is required.<br>";
@@ -28,7 +38,20 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $success = false;
         }
     }
-    saveMemberToDB();
+    if (empty($_POST["phone"])) {
+        $errorMsg .= "Phone Number is required.<br>";
+        $success = false;
+    } else {
+        $phone = $_POST["phone"];
+        $phone = (int) $phone;
+        if (!is_int($phone)) {
+            $errorMsg .= "Invalid Phone number, please only put numbers" . $_POST["phone"] . "<br>";
+            $success = false;
+        }
+    }
+    if ($success) {
+        saveMemberToDB();
+    }
 } else {
     $_SESSION["errormsg"] = "Unauthorised Access!";
     header("Location: http://35.187.229.58/project/index.php");
@@ -52,7 +75,7 @@ function password_chk($pwd, $con_pwd) {
 }
 
 function saveMemberToDB() {
-    global $email, $errorMsg, $success, $pwd;
+    global $email, $fname, $lname, $errorMsg, $success, $pwd, $phone;
     // Create database connection.
     $config = parse_ini_file('../../private/db-config.ini');
     $conn = new mysqli($config['servername'], $config['username'],
@@ -63,9 +86,9 @@ function saveMemberToDB() {
         $success = false;
     } else {
         // Prepare the statement:
-        $stmt = $conn->prepare("INSERT INTO travel_members (email, password) VALUES (?, ?)");
+        $stmt = $conn->prepare("INSERT INTO members(email, password, fname, lname, phoneno, cart_cartid) VALUES (?, ?, ?, ?, ?, ?)");
         // Bind & execute the query statement:
-        $stmt->bind_param("ss", $email, $pwd);
+        $stmt->bind_param("ssssii", $email, $pwd, $fname, $lname, $phone, $phone);
         if (!$stmt->execute()) {
             $errorMsg = "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
             $success = false;

@@ -45,7 +45,7 @@ function authenticateUser() {
         $success = false;
     } else {
         // Prepare the statement:
-        $stmt = $conn->prepare("SELECT * FROM travel_members WHERE email=?");
+        $stmt = $conn->prepare("SELECT * FROM members WHERE email=?");
         // Bind & execute the query statement:
         $stmt->bind_param("s", $email);
         $stmt->execute();
@@ -58,7 +58,6 @@ function authenticateUser() {
             $pwd = $row["password"];
             // Check if the password matches:
             if (!password_verify($_POST["log_pwd"], $pwd)) {
-                // Don't be too specific with the error message - hackers don't need to know which one they got right or wrong. :)
                 $errorMsg = "Email not found or password doesn't match...";
                 $success = false;
             }
@@ -91,7 +90,7 @@ function authenticateUser() {
                         $_SESSION["user"] = $email;
                         echo
                         '<div class="col-6 success">'
-                        . "<h1>Welcome Back!</h1>"
+                        . "<h1>Welcome Back".$fname.$lname."!</h1>"
                         . "<a href ='index.php' class='btn btn-success'>Return home</a>"
                         . "</div>";
                     } else {

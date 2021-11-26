@@ -1,10 +1,33 @@
 <?php
 session_start();
-if($_SESSION["user"]==NULL){
+if ($_SESSION["user"] == NULL) {
     $_SESSION["errormsg"] = "Please log in first!";
     header("Location: http://35.187.229.58/project/index.php");
     exit();
 }
+global $success, $fname, $lname, $phone, $email;
+$config = parse_ini_file('../../private/db-config.ini');
+$conn = new mysqli($config['servername'], $config['username'],
+        $config['password'], $config['dbname']);
+if ($conn->connect_error) {
+    $errorMsg = "Connection failed: " . $conn->connect_error;
+    $success = false;
+} else {
+    $stmt = $conn->prepare("SELECT * FROM members WHERE email=?");
+    $stmt->bind_param("s", $_SESSION['user']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        // Note that email field is unique, so should only have one row in the result set.
+        $row = $result->fetch_assoc();
+        $fname = $row["fname"];
+        $lname = $row["lname"];
+        $phone = $row["phoneno"];
+        $email = $row["email"];
+    }
+    $stmt->close();
+}
+$conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,47 +49,43 @@ if($_SESSION["user"]==NULL){
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h4 class="text-center">Profile Settings</h4>
                             </div>
+                            <form action="process_update.php" method="post">
                             <div class="row mt-2">
                                 <div class="col-md-6">
                                     <label class="labels">First Name</label>
-                                    <input type="text" class="form-control" placeholder="First Name">
+                                    <?php echo'<input required type="text" name="fname" class="form-control" placeholder="First Name" value="'.$fname.'">';?>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="labels">Last Name</label>
-                                    <input type="text" class="form-control" placeholder="Last Name">
+                                    <?php echo '<input required type="text" name="lname" class="form-control" placeholder="Last Name" value="' . $lname . '">';?>
                                 </div>
                             </div>
                             <div class="row mt-3">
                                 <div class="col-md-12">
                                     <label class="labels">Phone Number</label>
-                                    <input type="text" class="form-control" placeholder="Phone Number">
-                                </div>
-                                <div class="col-md-12">
-                                    <label class="labels">Address</label>
-                                    <input type="text" class="form-control" placeholder="Address">
+                                    <?php echo '<input required type="text" name="phone" class="form-control" placeholder="Phone Number" value="'. $phone. '">';?>
                                 </div>
                                 <div class="col-md-12">
                                     <label class="labels">Email</label>
-                                    <input type="email" class="form-control" placeholder="Email">
+                                    <?php echo '<input required type="email" name="email" class="form-control" placeholder="Email" value="'. $email .'">';?>
                                 </div>
-                            </div>
-                            <div class="row mt-3">
-                                <div class="col-md-6 form-group rounded">
-                                    <label for="country" class="labels">Country</label>
-                                    <select id="country" name="country" class="form-control">
-                                        <option value="singapore">Singapore</option>
-                                        <option value="malaysia">Malaysia</option>
-                                        <option value="china">China</option>
-                                    </select>
+                                <div class="col-md-12">
+                                    <label class="labels">Current Password</label>
+                                    <input required type="password" name="oldpwd" class="form-control" placeholder="Current Password">
                                 </div>
-                                <div class="col-md-6">
-                                    <label class="labels">State/Region</label>
-                                    <input type="text" class="form-control" value="" placeholder="state">
+                                <div class="col-md-12">
+                                    <label class="labels">New Password</label>
+                                    <input type="password" name="newpwd" class="form-control" placeholder="New Password">
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="labels">Confirm Password</label>
+                                    <input type="password" class="form-control" placeholder="Confirm New Password" name="connewpwd">
                                 </div>
                             </div>
                             <div class="mt-5 text-center">
-                                <button class="btn btn-primary profile-button" type="button">Save Profile</button>
+                                <button class="btn btn-primary profile-button" type="submit">Update Profile</button>
                             </div>
+                            </form>
                         </div>
                     </div>
                 </div>
