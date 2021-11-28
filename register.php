@@ -58,7 +58,7 @@
                             <div class="form-group">
                                 <label><input type="checkbox" name="agree" required> Agree to <a href="index.php" target="_blank">terms and conditions</a>.</label>
                             </div>
-                            <button id="regibtn" class="btn btn-primary" type="submit">Submit</button>
+                            <button id="regibtn" class="btn btn-primary mb-1" type="submit">Submit</button>
                     </div>
                 </div>
             </section>

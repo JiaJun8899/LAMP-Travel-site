@@ -36,16 +36,11 @@ p{
     display: inline-flex;
     vertical-align: top;
 }
-.carousel-inner img {
-  width: 100%; /* Set width to 100% */
-  margin: auto;
-  min-height:200px;
-}
 .navbar-custom{
     background-color: #D3D3D3;
 }
 /*Index*/
-.header{
+.mainheader{
     min-height: 125vh;
     width: 100%;
     background-image: url(../static/banner.jpg);
@@ -95,7 +90,6 @@ p{
     width: 80%;
     margin: auto;
     text-align: center;
-    padding-top: 100px;
 }
 .why-col{
     flex-basis: 31%;
@@ -205,3 +199,35 @@ p{
 .success h1{
     color: green;
 }
+/*About page*/
+.aboutheader{
+    min-height: 125vh;
+    width: 100%;
+    background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(../static/aboutbanner.jpg);
+    background-position:center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+}
+.abouttext-box{
+    width: 90%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    text-align: center;
+}
+.abouttext-box h1{
+    font-size: 4em;
+    color: white;
+}
+.aboutstandard{
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
+.mtt h2{
+    font-size: 2em;
+}
+/*contact us*/
+

@@ -47,12 +47,14 @@ if (empty($_POST["phone"])) {
 } else {
     $phone = $_POST["phone"];
     $phone = (int) $phone;
-    if (!is_int($phone)) {
+    if ($phone == 0) {
         $errorMsg .= "Invalid Phone number, please only put numbers" . $_POST["phone"] . "<br>";
         $success = false;
     }
 }
-update_data();
+if($success){
+    update_data();
+}
 
 function update_data() {
     global $email, $oldpwd, $fname, $lname, $newpwd, $errorMsg, $success, $phone;

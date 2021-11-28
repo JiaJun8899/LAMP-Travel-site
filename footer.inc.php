@@ -1,4 +1,4 @@
-<br><footer>
+<footer>
     <div class="icons">
         <a href="https://www.facebook.com/SingaporeTech/" target="_blank"><i class="fa fa-facebook"></i></a>
         <a href="https://twitter.com/singaporetech" target="_blank"><i class="fa fa-twitter"></i></a>

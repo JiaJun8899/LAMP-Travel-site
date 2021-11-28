@@ -96,7 +96,6 @@ function popUp(buttonObj){
         else if (hasClass(children[i], "image-link"))
             imageLink = children[i].innerHTML;
     }
-        
     // place content in popup elements
     document.getElementById("popup-country").innerHTML = country;
     document.getElementById("popup-city").innerHTML = city;
