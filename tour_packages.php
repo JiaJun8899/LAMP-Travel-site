@@ -37,6 +37,9 @@
         <!-- Bootstrap core CSS -->
         <link rel="stylesheet" href="css/bootstrap.min.css">
 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+        
         <!-- Custom styles for this template -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Playfair&#43;Display:700,900&amp;display=swap">
         <!-- Custom styles for this template -->
@@ -134,7 +137,7 @@
                             echo "<div class=\"col p-4 d-flex flex-column position-static\">";
                                 echo "<strong class=\"d-inline-block mb-2 text-success country\">" . $country . "</strong>";
                                 echo "<h3 class=\"mb-0 city\">" . $city . "</h3>";
-                                echo "<div class=\"mb-1 text-muted price\">" . $price . "</div>";
+                                echo "<div class=\"mb-1 text-muted price\"$>" . $price . "</div>";
                                 echo "<p class=\"card-text mb-auto short-description\">" . $short_description . "</p>";
                                 echo "<p class=\"long-description\">" . $long_description . "</p>";
                                 echo "<p class=\"image-link\">data:image/jpeg;base64," . base64_encode($img) . "</p>";
@@ -170,7 +173,7 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <form action="process_add_to_cart.php" method="POST">
+                        <form action="tour_packages.php" method="post" id="package-form">
                             <div class="modal-body row">
                                 <div class="col col-xl-9">
                                     <h5 id="popup-city">City<br></h5>
@@ -184,9 +187,25 @@
                                     <br>
                                     <label for="date">Start Date: </label>
                                     <input type="date" id="date" name="date" required> <!--might not work for safari-->
+                                
+                                    <!-- Quantity -->
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <button type="button" onclick="quantity_change(0)" class="quantity-left-minus btn btn-danger btn-number"  data-type="minus" data-field="">
+                                                -
+                                            </button>
+                                        </span>
+                                        <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
+                                        <span class="input-group-btn">
+                                            <button type="button" onclick="quantity_change(1)" class="quantity-right-plus btn btn-success btn-number" data-type="plus" data-field="">
+                                                +
+                                            </button>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="modal-footer form-group">
+                                <input type="hidden" id="package_id" name="package_id" value="0">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                 <input type="submit" name="submit" value="Add to Cart" class="btn btn-primary cartButton">
                             </div>
