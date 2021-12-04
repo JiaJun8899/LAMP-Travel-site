@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if ($success) {
         authenticateUser();
     }
-}else{
+} else {
     $_SESSION["errormsg"] = "Unauthorised Access!";
     header("Location: http://35.187.229.58/project/index.php");
     exit();
@@ -90,9 +90,12 @@ function authenticateUser() {
                         $_SESSION["user"] = $email;
                         echo
                         '<div class="col-6 success">'
-                        . "<h1>Welcome Back".$fname.$lname."!</h1>"
+                        . "<h1>Welcome Back!</h1>"
+                        . '<p>' . $fname . ' ' . $lname . '</p>'
+                        . '<p>You will be redirected in 5 seconds</p>'
                         . "<a href ='index.php' class='btn btn-success'>Return home</a>"
                         . "</div>";
+                        header( "refresh:5; url=http://35.187.229.58/project/index.php" );
                     } else {
                         echo
                         '<div class="col-6 error">'
@@ -109,3 +112,4 @@ function authenticateUser() {
         include "footer.inc.php";
         ?>
     </body>
+</html>

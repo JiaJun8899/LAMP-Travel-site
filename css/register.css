@@ -1,0 +1,20 @@
+.registerpage{
+    background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(/static/registerbg.jpg);
+    background-size: cover;
+}
+.signup{
+    padding: 10px;
+    background-color: #FFF;
+    margin-top: 50px;
+}
+.signup h1{
+    text-align: center;
+}
+.center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}

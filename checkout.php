@@ -1,24 +1,41 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <?php
-$memberid = $cardnum = $expdate = $nameCard = $errMsg = "";
-$fname = $lname = $phone = $email = "";
-$cartArray = $resultsArray = [];
-$success = true;
-$memberid = 27;
-$secretKey = "secret";
-//echo 'decrypted: ' . decrypt("AWLUnaAOY/WCgqvTYpFMbg==", $secretKey);
-
-getCards();
+session_start();
+$memberid = $fname = $lname = $phone = $email = $errMsg = "";
 $successD = true;
-getUserDetails();
-$successC = true;
-getCartItems();
-$cardnum = MaskCreditCard($cardnum);
+$current_user = $_SESSION['user'];
+$secretKey = "secret";
+getUserDetails($current_user);
+getCartItems($current_user);
+getCards($memberid);
+$_SESSION['mid'] = $memberid;
+$_SESSION['cart'] = $cartitem;
+$testcart = $_SESSION['cart'];
+
+function getCards($memberid) {
+    global $errMsg, $success, $cardArray;
+    $count = 0;
+    $config = parse_ini_file('../../private/db-config.ini');
+    $conn = new mysqli($config['servername'], $config['username'],
+            $config['password'], $config['dbname']); //$config['dbname']
+    if ($conn->connect_error) {
+        $errMsg = "Connection failed: " . $conn->connect_error;
+        $success = false;
+    } else {
+        $stmt = $conn->prepare("SELECT * FROM creditcard WHERE members_mid=?");
+        $stmt->bind_param("i", $memberid);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while ($row = $result->fetch_assoc()) {
+            $cardArray[$count] = array();
+            $cardArray[$count]["cardnum"] = $row["cardnum"];
+            $cardArray[$count]["expiry"] = $row["expdate"];
+            $cardArray[$count]["nameoncard"] = $row["nameoncard"];
+            $count += 1;
+        }
+        $stmt->close();
+    }
+    $conn->close();
+}
 
 function MaskCreditCard($cc) {
     $cc = str_replace(array('-', ' '), '', $cc);
@@ -35,7 +52,6 @@ function MaskCreditCard($cc) {
         // Add the current character to the new credit card
         $newCreditCard = $cc[$i] . $newCreditCard;
     }
-
     // Get the cc Length
     $cc_length = strlen($newCreditCard);
     // Replace all characters of credit card except the last four and dashes
@@ -56,37 +72,8 @@ function decrypt($encryptedText, $key) {
     return $decryptedText;
 }
 
-function getCards() {
-    global $memberid, $errMsg, $success, $resultsArray;
-
-    $config = parse_ini_file('../../private/db-config.ini');
-    $conn = new mysqli($config['servername'], $config['username'],
-            $config['password'], $config['dbname']); //$config['dbname']
-    if ($conn->connect_error) {
-        $errMsg = "Connection failed: " . $conn->connect_error;
-        $success = false;
-    } else {
-// Prepare the statement:
-        $stmt = $conn->prepare("SELECT * FROM creditcard WHERE members_mid=?");
-// Bind & execute the query statement:
-        $stmt->bind_param("i", $memberid);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_all();
-            $resultsArray = $row;
-        } else {
-            $errMsg = "No Saved Cards";
-            $success = false;
-        }$stmt->close();
-    }
-    $conn->close();
-}
-
-//!!!!!ADD THIS
-function getUserDetails() {
+function getUserDetails($current_user) {
     global $memberid, $fname, $lname, $phone, $email, $errMsg, $successD;
-
     $config = parse_ini_file('../../private/db-config.ini');
     $conn = new mysqli($config['servername'], $config['username'],
             $config['password'], $config['dbname']); //$config['dbname']
@@ -95,9 +82,9 @@ function getUserDetails() {
         $successD = false;
     } else {
 // Prepare the statement:
-        $stmt = $conn->prepare("SELECT * FROM members WHERE mid=?");
+        $stmt = $conn->prepare("SELECT * FROM members WHERE email=?");
 // Bind & execute the query statement:
-        $stmt->bind_param("i", $memberid);
+        $stmt->bind_param("s", $current_user);
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
@@ -106,6 +93,7 @@ function getUserDetails() {
             $lname = $row["lname"];
             $phone = $row["phoneno"];
             $email = $row["email"];
+            $memberid = $row["mid"];
         } else {
             $errMsg = "User Not Found";
             $successD = false;
@@ -114,92 +102,77 @@ function getUserDetails() {
     $conn->close();
 }
 
-function getCartItems() {
-    global $memberid, $errMsg, $successC, $cartArray;
-//    $success = true;
+function getCartItems($cart_id) {
+    global $cartitem;
+    $count = 0;
     $config = parse_ini_file('../../private/db-config.ini');
-    $conn = new mysqli($config['servername'], $config['username'],
-            $config['password'], $config['dbname']); //$config['dbname']
+    $conn = new mysqli($config['servername'], $config['username'], $config['password'], $config['dbname']);
     if ($conn->connect_error) {
-        $errMsg = "Connection failed: " . $conn->connect_error;
-        $successC = false;
+        $errorMsg = "Connection failed: " . $conn->connect_error;
+        $success = false;
     } else {
-        $stmt = $conn->prepare("SELECT * FROM tour_packages T, cart_has_tour_packages CT WHERE T.pid = CT.tour_packages_pid AND cart_cartid = (SELECT cart_cartid FROM travel.members WHERE mid = ?);");
-        $stmt->bind_param("i", $memberid);
+        $stmt = $conn->prepare("SELECT * FROM cart WHERE cartid =?");
+        $stmt->bind_param("s", $cart_id);
         $stmt->execute();
         $result = $stmt->get_result();
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_all();
-            $cartArray = $row;
-        } else {
-            $errMsg = "NO CART ITEMS";
-            $successC = false;
-        }$stmt->close();
+        while ($row = $result->fetch_assoc()) {
+            // add rows as array into array
+            $cartitem[$count] = array();
+            $cartitem[$count]["package_id"] = $row["package_id"];
+            $cartitem[$count]["price"] = $row["price"];
+            $cartitem[$count]["country"] = $row["country"];
+            $cartitem[$count]["quantity"] = $row["quantity"];
+            $cartitem[$count]["date"] = $row["date"];
+            $cartitem[$count]["cid"] = $row["cid"];
+            $count += 1;
+        }
+        $stmt->close();
     }
     $conn->close();
 }
 ?>
 
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
-        <title>CHECKOUT</title>
-        <link rel="stylesheet" href="main.css" />
-        <link rel="stylesheet"
-              href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-              integrity=
-              "sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-              crossorigin="anonymous">
-        <!-- CSS has to be After the BootStrap -->
-        <link rel="stylesheet" href="cssmain.css"/>
-        <!--jQuery *Bootstrap JS uses jQuery functions so jQuery must be above Bootstrap JS--> 
-        <script defer
-                src="https://code.jquery.com/jquery-3.4.1.min.js"
-                integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-                crossorigin="anonymous">
-        </script>
-        <!--Bootstrap JS-->
-        <script defer
-                src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"
-                integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm"
-                crossorigin="anonymous">
-        </script>
-        <!--FOR CREDIT CARD FORMATTING -->
+        <?php
+        include 'header.inc.php';
+        ?>
         <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery.payment/3.0.0/jquery.payment.min.js"></script>
-        <!-- Custom JS -->
-        <script defer src="scripts.js"></script>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script defer src="js/scripts.js"></script>
+        <title>CHECKOUT</title>
     </head>
     <body>
-        <div class="container">
+        <?php
+        include 'nav.inc.php';
+        ?>
+        <main class="container">
             <div class="row">
                 <div class="col-md-4 order-md-2 mb-4">
                     <h4 class="d-flex justify-content-between align-items-center mb-3">
-                        <span class="text-muted">Your Cart</span>
+                        <br>
+                        <span>Your Cart</span> <!--class="text-muted"-->
                     </h4>
 
                     <ul class="list-group mb-3">
-
                         <?php
-                        if ($successC) {
-                            $total = 0;
-//                            echo "RESULT ARRAY: " . count($cartArray) . "<br>";
-                            foreach ($cartArray as $values) {
-//                                echo $values[1] . ", " . $values[2] . ", " . $values[10] . ", " . $values[3] . "<br>";
-                                $curr = $values[3] * $values[10]; //$values[10]
-                                echo '<li class="list-group-item d-flex justify-content-between lh-condensed">
-                                        <div>
-                                            <h6 class="my-0">' . $values[1] . ", " . $values[2] . '</h6>
-                                            <small class="text-muted">Quantity: ' . $values[10] . '</small>
-                                        </div>
-                                        <span class="text-muted">$' . $curr . '</span> 
-                                      </li>';
-                                $total += $curr;
-                            }
-                        } else {
-//                            echo "<h2>Oops!</h2>";
-                            echo "<p>No Cart Items found.</p>";
-//                            echo "<p>" . $errorMsg . "</p>";
+                        $total = 0;
+                        for ($i = 0; $i < count($cartitem); $i++) {
+                            $price = $cartitem[$i]["price"];
+                            $country = $cartitem[$i]["country"];
+                            $quantity = $cartitem[$i]["quantity"];
+                            $date = $cartitem[$i]["date"];
+                            $cid = $cartitem[$i]["cid"];
+                            $pid = $cartitem[$i]["package_id"];
+                            $src = $cartimg[$pid]['img'];
+                            $total = ($quantity * $price) + $total;
+                            echo '<li class="list-group-item d-flex justify-content-between lh-condensed">';
+                            echo '<div>';
+                            echo '<h5 class="my-0">' . $country . '</h6>';
+                            echo '<small class="text-muted">Quantity: ' . $quantity . '</small>';
+                            echo '</div>';
+                            echo '<span class="text-muted">$' . $price * $quantity . '</span>';
+                            echo '</li>';
                         }
                         ?>
                         <li class="list-group-item d-flex justify-content-between">
@@ -210,18 +183,18 @@ function getCartItems() {
                 </div>
                 <div class="col-md-8 order-md-1">
                     <h4 class="mb-3">Contact Information</h4>
-                    <form class="needs-validation" id="checkoutform" action="booknow_process.php" method="POST" novalidate>
+                    <form class="needs-validation" id="checkoutform" action="process_checkout.php" method="POST" novalidate>
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="firstName">First name</label>
-                                <input type="text" class="form-control" id="firstName" name="firstName" placeholder="" value="<?php echo $fname; ?>" required>
+                                <input type="text" class="form-control" id="firstName" name="firstName" value="<?php echo $fname; ?>" required>
                                 <div class="invalid-feedback">
                                     Valid first name is required.
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="lastName">Last name</label>
-                                <input type="text" class="form-control" id="lastName" name="lastName" placeholder="" value="<?php echo $lname; ?>" required>
+                                <input type="text" class="form-control" id="lastName" name="lastName" value="<?php echo $lname; ?>" required>
                                 <div class="invalid-feedback">
                                     Valid last name is required.
                                 </div>
@@ -244,26 +217,24 @@ function getCartItems() {
                             </div>
                         </div>
                         <hr class="mb-4">
-                        <h4 class="mb-3">Payment</h4>
-                        <h5>Saved Cards</h5>
+                        <div class="mb-3">
+                        <h4>Payment</h4>
+                        <small>We accept Visa, Master and Amex.</small>
+                        </div>
+                        <p>Saved Cards</p>
                         <?php
-                        if ($success) {
-//                            echo "RESULT ARRAY: " . count($resultsArray) . "<br>";
-                            foreach ($resultsArray as $values) {
-//                            foreach ($values as $val => $card){
-//                                echo "$val = $card<br>";
-                                echo "<input type='radio' id='card' onclick='displayRadioValue()'"
-                                . " name='card' value='" . MaskCreditCard(decrypt($values[1], $secretKey)) . "," . $values[2] . "," . $values[3] . "'><label for='html'> "
-                                . MaskCreditCard(decrypt($values[1], $secretKey)) . "</label><br>";
-                            }
-//                        }
-//            }
-                        } else {
-//                            echo "<h2>Oops!</h2>";
-                            echo "<p>No Cards Saved</p>";
-//                            echo "<p>" . $errorMsg . "</p>";
+                        for ($i = 0; $i < count($cardArray); $i++) {
+                            $cardnum = $cardArray[$i]["cardnum"];
+                            $expire = $cardArray[$i]["expiry"];
+                            $cardname = $cardArray[$i]["nameoncard"];
+                            $actual = decrypt($cardnum, $secretKey);
+                            echo "<input type='radio' onclick='displayRadioValue()'"
+                            . " name='card' value='" . MaskCreditCard($actual) . "," . $expire . "," . $cardname . "'><label for='html'> "
+                            . MaskCreditCard($actual) . "</label><br>";
                         }
                         ?>
+                        <button type="button" name="clearRadio" class="btn btn-primary"id="clearRadio" onclick="clearRadioinfo()">Clear Card Info</button>
+                        <hr>
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="ccname">Name on card</label>
@@ -284,7 +255,7 @@ function getCartItems() {
                         <div class="row">
                             <div class="col-md-3 mb-3">
                                 <label for="ccexp">Expiration</label>
-                                <input type="text" class="form-control ccexp" id="ccexp" name="ccexp" placeholder="•• / ••" required value=>
+                                <input type="text" class="form-control ccexp" id="ccexp" name="ccexp" placeholder="•• / ••" required value="">
                                 <div class="invalid-feedback">
                                     Expiration date required
                                 </div>
@@ -303,14 +274,17 @@ function getCartItems() {
                         </div>
                         <div class="form-group form-check">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" name="savecard">Save this card
+                                <input class="form-check-input" type="checkbox" name="savecard" value="save">Save this card
                             </label>
                         </div>
                         <hr class="mb-4">
-                        <button class="btn btn-primary btn-lg btn-block" id="submitBtn" type="submit">Continue to checkout</button>
+                        <button class="btn btn-primary btn-lg btn-block mb-4" id="submitBtn" type="submit">Continue to checkout</button>
                     </form>
                 </div>
             </div>
-        </div>
+        </main>
+        <?php
+        include 'footer.inc.php';
+        ?>
     </body>
 </html>

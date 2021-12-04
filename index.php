@@ -5,14 +5,52 @@ if ($_SESSION["errormsg"] != NULL) {
     echo "<script>alert('$error');</script>";
     unset($_SESSION["errormsg"]);
 }
+$indexitem = array();
+$testitem = array();
+$count = 0;
+// Create database connection.
+$config = parse_ini_file('../../private/db-config.ini');
+$conn = new mysqli($config['servername'], $config['username'], $config['password'], $config['dbname']);
+// Check connection
+if ($conn->connect_error) {
+    $errorMsg = "Connection failed: " . $conn->connect_error;
+    $success = false;
+} else {
+    // Prepare the statement:
+    $stmt = $conn->prepare("SELECT country, img FROM tour_packages");
+    // Bind & execute the query statement:
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
+        // add rows as array into array
+        $indexitem[$count] = array();
+        $indexitem[$count]["country"] = $row["country"];
+        $indexitem[$count]["img"] = $row["img"];
+        $count += 1;
+    }
+    $count = 0;
+    $stmt = $conn->prepare("SELECT * FROM indexpage");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
+        // add rows as array into array
+        $testitem[$count] = array();
+        $testitem[$count]["username"] = $row["username"];
+        $testitem[$count]["testi"] = $row["testi"];
+        $testitem[$count]["img"] = $row["img"];
+        $count += 1;
+    }
+    $stmt->close();
+}
+$conn->close();
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="index">
     <head>
         <?php
         include 'header.inc.php';
         ?>
-        <title>Travel</title>
+        <title>Allons-Y</title>
     </head>
     <body>
         <?php
@@ -27,30 +65,33 @@ if ($_SESSION["errormsg"] != NULL) {
         </header>
         <main>
             <section class="py-5 standard">
-                <h1>Our story</h1>
-                <p>Our company was founded by 5 friend's love of Europe and their rich culture</p>
-                <a href='' class='hero-btn'>Find out more</a>
+                <h2>Our story</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Pellentesque aliquet turpis nulla, eleifend faucibus est
+                    sollicitudin ut. Maecenas ut venenatis ex, et dapibus purus
+                    Donec sit.</p>
+                <a href='about.php' class='hero-btn'>Find out more</a>
             </section>
             <div class="bg-light">
                 <section class="py-5 bg-light standard">
-                    <h1>What makes us special</h1>
+                    <h2>What makes us special</h2>
                     <p>We stand out from the rest because</p>
                     <div class="row justify-content-between">
-                        <div class="col-3.5 why-col">
+                        <div class="why-col">
                             <h3>Expert Local Guides</h3>
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                                 Pellentesque aliquet turpis nulla, eleifend faucibus est
                                 sollicitudin ut. Maecenas ut venenatis ex, et dapibus purus
                                 Donec sit.</p>
                         </div>
-                        <div class="col-3.5 why-col">
+                        <div class="why-col">
                             <h3>Handpicked Adventures</h3>
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                                 Pellentesque aliquet turpis nulla, eleifend faucibus est
                                 sollicitudin ut. Maecenas ut venenatis ex, et dapibus purus
                                 Donec sit.</p>
                         </div>
-                        <div class="col-3.5 why-col">
+                        <div class="why-col">
                             <h3>Hidden Gem Destinations</h3>
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                                 Pellentesque aliquet turpis nulla, eleifend faucibus est
@@ -61,115 +102,78 @@ if ($_SESSION["errormsg"] != NULL) {
                 </section>
             </div>
             <section class="py-5 standard">
-                <h1>Popular Destinations</h1>
+                <h2>Popular Destinations</h2>
                 <p>These popular Destinations will never leave you disappointed</p>
                 <div class="row justify-content-between">
-                    <div class="col-3.5 pop-col">
-                        <img src="static/paris2.jpg">
-                        <div class="layer">
-                            <h3>PARIS</h3>
-                        </div>
-                    </div>
-                    <div class="col-3.5 pop-col">
-                        <img src="static/london.jpg">
-                        <div class="layer">
-                            <h3>LONDON</h3>
-                        </div>
-                    </div>
-                    <div class="col-3.5 pop-col">
-                        <img src="static/rome.jpg">
-                        <div class="layer">
-                            <h3>ROME</h3>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <section>
-                <div id="indexcarousel" class="carousel slide" data-ride="carousel">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <?php
-                            $indexitem = array();
-                            $count = 0;
-                            // Create database connection.
-                            $config = parse_ini_file('../../private/db-config.ini');
-                            $conn = new mysqli($config['servername'], $config['username'], $config['password'], $config['dbname']);
-                            // Check connection
-                            if ($conn->connect_error) {
-                                $errorMsg = "Connection failed: " . $conn->connect_error;
-                                $success = false;
-                            } else {
-                                // Prepare the statement:
-                                $stmt = $conn->prepare("SELECT country, img FROM tour_packages");
-                                // Bind & execute the query statement:
-                                $stmt->execute();
-                                $result = $stmt->get_result();
-                                while ($row = $result->fetch_assoc()) {
-                                    // add rows as array into array
-                                    $indexitem[$count] = array();
-                                    $indexitem[$count]["country"] = $row["country"];
-                                    $indexitem[$count]["img"] = $row["img"];
-                                    $count += 1;
-                                }
-                                for ($i = 0; $i < count($indexitem); $i++) {
-                                    $src = $indexitem[$i]["img"];
-                                    $alt = $indexitem[$i]["country"];
-                                    if ($i == 0) {
-                                        echo '<img class="d-block w-100" alt="'. $alt .'" src="data:image/jpeg;base64,' . base64_encode($src) . '"/>';
-                                        echo '</div>';
-                                    } else {
-                                        echo '<div class="carousel-item">';
-                                        echo '<img class="d-block w-100" alt="'. $alt .'" src="data:image/jpeg;base64,' . base64_encode($src) . '"/>';
-                                        echo '</div>';
-                                    }
-                                }
-                                $stmt->close();
-                            }
-                            $conn->close();
-                            ?>
-                        </div>
-                        <a class="carousel-control-prev" href="#indexcarousel" role="button" data-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="carousel-control-next" href="#indexcarousel" role="button" data-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    </div>
+                    <?php
+                    for ($i = 0; $i < count($indexitem); $i++) {
+                        $src = $indexitem[$i]["img"];
+                        $alt = $indexitem[$i]["country"];
+                        if ($alt == "Greece" || $alt == "Scotland" || $alt == "France") {
+                            echo '<div class="pop-col">';
+                            echo '<img alt="' . $alt . '" src="data:image/jpeg;base64,' . base64_encode($src) . '"/>';
+                            echo '<div class="layer">';
+                            echo '<h3>' . $alt . '</h3>';
+                            echo '</div>';
+                            echo '</div>';
+                        }
+                    }
+                    ?>
                 </div>
             </section>
             <section class="bg-light">
-                <section class="py-5 standard">
-                    <h1>Testimonial From our customers</h1>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <div class="row justify-content-between">
-                        <div class="testimonial-col">
-                            <img src="static/user1.jpg">
-                            <div>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing
-                                    elit. Pellentesque aliquet turpis nulla, eleifend
-                                    faucibus est sollicitudin ut. Maecenas ut venenatis ex,
-                                    et dapibus purus.</p>
-                                <h3>Christine Berkley</h3>
-                            </div>
-                        </div>
-                        <div class="testimonial-col">
-                            <img src="static/user2.jpg">
-                            <div>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing
-                                    elit. Pellentesque aliquet turpis nulla, eleifend
-                                    faucibus est sollicitudin ut. Maecenas ut venenatis ex,
-                                    et dapibus purus.</p>
-                                <h3>David</h3>
-                            </div>
-                        </div>
+                <h2 class="text-center py-1">Sights from some of our adventures</h2>
+                <div id="indexcarousel" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        <?php
+                        for ($i = 0; $i < count($indexitem); $i++) {
+                            $src = $indexitem[$i]["img"];
+                            $alt = $indexitem[$i]["country"];
+                            if ($i == 0) {
+                                echo '<div class="carousel-item active">';
+                                echo '<img class="d-block w-100" alt="' . $alt . '" src="data:image/jpeg;base64,' . base64_encode($src) . '"/>';
+                                echo '</div>';
+                            } else {
+                                echo '<div class="carousel-item">';
+                                echo '<img class="d-block w-100" alt="' . $alt . '" src="data:image/jpeg;base64,' . base64_encode($src) . '"/>';
+                                echo '</div>';
+                            }
+                        }
+                        ?>
                     </div>
-                </section>
+                    <a class="carousel-control-prev" href="#indexcarousel" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#indexcarousel" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </section>
+            <section class="py-5 standard">
+                <h2>Testimonial From our customers</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <div class="row justify-content-between">
+                    <?php
+                    for ($i = 0; $i < count($testitem); $i++) {
+                        $src = $testitem[$i]["img"];
+                        $alt = $testitem[$i]["username"];
+                        $testi = $testitem[$i]["testi"];
+                        echo '<div class="testimonial-col">';
+                        echo '<img alt="user' . $i . '" src="data:image/jpeg;base64,' . base64_encode($src) . '"/>';
+                        echo '<div>';
+                        echo '<p>' . $testi . '</p>';
+                        echo '<h3>' . $alt . '</h3>';
+                        echo '</div>';
+                        echo '</div>';
+                    }
+                    ?>
+                </div>
             </section>
         </main>
+        <?php
+        include 'footer.inc.php';
+        ?>
     </body>
-    <?php
-    include 'footer.inc.php';
-    ?>
 </html>

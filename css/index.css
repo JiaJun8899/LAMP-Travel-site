@@ -1,55 +1,8 @@
-*{
-    font-family: 'Open Sans', sans-serif;
-}
-footer{
-    border-top: solid;
-    text-align: center;
-    background-color: #f2f2f2;
-    padding: 18px;
-}
-footer p{
-    font-style:italic;
-    font-size: 75%;
-}
-footer .fa{
-    font-size: 100%;
-    text-decoration: none;
-}
-h1{
-    font-size: 36px;
-    font-weight: 600;
-}
-
-h3{
-    text-align: center;
-    font-weight: 600;
-    margin: 10px 0;
-}
-p{
-    color: #777;
-    font-size: 14px;
-    font-weight: 300;
-    line-height: 22px;
-    padding: 10px;
-}
-/*navbar*/
-.material-icons{
-    display: inline-flex;
-    vertical-align: top;
-}
-.carousel-inner img {
-  width: 100%; /* Set width to 100% */
-  margin: auto;
-  min-height:200px;
-}
-.navbar-custom{
-    background-color: #D3D3D3;
-}
 /*Index*/
 .header{
     min-height: 125vh;
     width: 100%;
-    background-image: url(../static/banner.jpg);
+    background-image: url(/static/banner.jpg);
     background-position:center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -183,27 +136,20 @@ p{
         margin-right: 15px;
     }
 }
-/*Register page*/
-.registerpage{
-    background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(../static/registerbg.jpg);
-    background-size: cover;
-}
-.signup{
-    padding: 10px;
-    background-color: #FFF;
-    margin-top: 50px;
-}
-.signup h1{
-    text-align: center;
-}
-/*Process Login Page*/
-.login{
-    text-align: center;
-}
-.error h1{
-    color: red;
-}
-.success h1{
-    color: green;
-}
 
+h1{
+    font-size: 36px;
+    font-weight: 600;
+}
+h3{
+    text-align: center;
+    font-weight: 600;
+    margin: 10px 0;
+}
+p{
+    color: #777;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 22px;
+    padding: 10px;
+}

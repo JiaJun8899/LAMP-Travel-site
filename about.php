@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -18,7 +21,7 @@
         <main>
             <div class="bg-light">
                 <section class="py-5 aboutstandard">
-                    <h1>Our Motto</h1>
+                    <h2>Our Motto</h2>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                         Pellentesque aliquet turpis nulla, eleifend faucibus est
                         sollicitudin ut. Maecenas ut venenatis ex, et dapibus purus
@@ -26,7 +29,7 @@
                 </section>
             </div>
             <section class="py-5 aboutstandard">
-                <h1>Our mission</h1>
+                <h2>Our mission</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                     Pellentesque aliquet turpis nulla, eleifend faucibus est
                     sollicitudin ut. Maecenas ut venenatis ex, et dapibus purus
@@ -34,30 +37,30 @@
             </section>
             <div class="bg-light">
                 <section class="py-5 aboutstandard">
-                    <h1>Meet the team</h1>
+                    <h2>Meet the team</h2>
                     <div class= "row justify-content-between">
                         <div class="mtt col">
-                            <h2>Chen JiaJun</h2>
+                            <h3>Chen JiaJun</h3>
                             <p>Student ID: 2101351</p>
                         </div>
                         <div class="mtt col">
-                            <h2>Ellynn Teo </h2>
-                            <p>Student ID:</p>
+                            <h3>Ellynn Teo </h3>
+                            <p>Student ID: 2102530</p>
                         </div>
                         <div class="mtt col">
-                            <h2>Sam Tay</h2>
-                            <p>Student ID:</p>
+                            <h3>Sam Tay</h3>
+                            <p>Student ID: 2100928</p>
                         </div>
-                        <div lass="mtt col">
-                            <h2>Sophie</h2>
-                            <p>Student ID:</p>
+                        <div class="mtt col">
+                            <h3>Sophie Wong</h3>
+                            <p>Student ID: 2102284</p>
                         </div>
                     </div>
                 </section>
             </div>
         </main>
+        <?php
+        include 'footer.inc.php';
+        ?>
     </body>
-    <?php
-    include 'footer.inc.php';
-    ?>
 </html>

@@ -17,6 +17,7 @@ function activateMenu() {
         }
     });
 }
+//Validation for register page
 function validateEmail(email) {
     const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
@@ -31,6 +32,9 @@ function validatemail() {
     } else {
         $result.text($email + " is not a valid email");
         $result.css("color", "red");
+    }
+    if($email == ""){
+        $result.text("");
     }
     return false;
 }
@@ -71,11 +75,13 @@ function checkSame() {
         $submit.attr("disabled", true);
     }
 }
-
+//Register page validation ends here
+//Tour packages JS functions
+// package pop up menu
 function popUp(buttonObj){
     // get data from button parents
     // classes = country, city, price, short-description, long-description, image-link
-    var country, city, price, shortDescription, longDescription, imageLink;
+    var id, country, city, price, shortDescription, longDescription, imageLink;
     
     // get parent div that button is contained in
     var parentDiv = buttonObj.parentNode;
@@ -96,14 +102,37 @@ function popUp(buttonObj){
         else if (hasClass(children[i], "image-link"))
             imageLink = children[i].innerHTML;
     }
+    
+    id = buttonObj.id;
+    
     // place content in popup elements
     document.getElementById("popup-country").innerHTML = country;
+    document.getElementById("ccountry").value = country;
     document.getElementById("popup-city").innerHTML = city;
     document.getElementById("popup-price").innerHTML = "Price: " + price;
+    document.getElementById("cprice").value = price;
     document.getElementById("popup-thumbnail").src = imageLink;
+    document.getElementById("popup-thumbnail").alt = city;
     document.getElementById("popup-long-description").innerHTML = longDescription;    
+    document.getElementById("package_id").value = "" + id;
 }
 
 function hasClass(element, className) {
     return (' ' + element.className + ' ').indexOf(' ' + className+ ' ') > -1;
+}
+
+// quantity function
+function quantity_change(button_val)
+{
+    var valueInt = parseInt(document.getElementById("quantity").value, 10);
+    
+    if (button_val === 0 && valueInt > 1)
+    {
+        valueInt -= 1;
+    }
+    else if (button_val === 1 && valueInt < 100)
+    {
+        valueInt += 1;
+    }
+    document.getElementById("quantity").value = "" + valueInt;
 }

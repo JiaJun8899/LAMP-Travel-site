@@ -1,0 +1,14 @@
+footer{
+    border-top: solid;
+    text-align: center;
+    background-color: #f2f2f2;
+    padding: 18px;
+}
+footer p{
+    font-style:italic;
+    font-size: 75%;
+}
+footer .fa{
+    font-size: 100%;
+    text-decoration: none;
+}

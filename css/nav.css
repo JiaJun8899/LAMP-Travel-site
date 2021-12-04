@@ -1,0 +1,15 @@
+/*navbar*/
+.material-icons{
+    display: inline-flex;
+    vertical-align: top;
+}
+
+.carousel-inner img {
+  width: 100%; /* Set width to 100% */
+  margin: auto;
+  min-height:200px;
+}
+
+.navbar-custom{
+    background-color: #D3D3D3;
+}
